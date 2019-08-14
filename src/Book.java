@@ -1,14 +1,23 @@
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 
 public class Book {
     private String bookName;
     private String isbn;
     private String author;
+    private boolean borrowed;
+
+    private LocalDate borrowDate;
+    private LocalDate returnDate;
+    private int lastDay;
 
     public Book(String n,String i,String a){
         bookName=n;
         isbn=i;
         author=a;
+        borrowed=false;
+
     }
 
     public String getBookName() {
@@ -33,5 +42,41 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String isBorrowed(){
+        if(borrowed==true){
+            return "대출중";
+        }
+        else
+            return "대출가능";
+    }
+
+    public void setBorrowed(boolean borrowed) {
+        this.borrowed = borrowed;
+    }
+
+    public LocalDate getBorrowDate() {
+        return borrowDate;
+    }
+
+    public void setBorrowDate(LocalDate borrowDate) {
+        this.borrowDate = borrowDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public void setLastDay(int lastDay) {
+        this.lastDay = lastDay;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public int getLastDay() {
+        return lastDay;
     }
 }

@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 
 public class MyLibrary {
@@ -42,13 +44,17 @@ public class MyLibrary {
         switch(choice) {
             case -1: cls();start();break;
             case 1: BorrowBook();showMenu();break;
-            case 2:break;
+            case 2:returnBook();showMenu();break;
             case 3:curUser.showMyBook();showMenu();break;
-
-
-
-
         }
+
+    }
+    public void returnBook(){
+        curUser.showMyBook(); int choice;
+        System.out.println("반납하실 도서의 번호를 입력해주세요");
+        choice=scan.nextInt();
+        curUser.RemoveBook(choice);
+        System.out.println("도서의 반납이 완료되었습니다");
 
     }
 
@@ -59,14 +65,19 @@ public class MyLibrary {
         dash();
         System.out.print("대출을 원하시는 책의 번호를 입력해주세요:");
         bookNum=scan.nextInt()-1;
+        Book b=bookList.get(bookNum);
         curUser.AddBook(bookList.get(bookNum));
+        b.setBorrowDate(LocalDate.now());
+        b.setReturnDate(b.getBorrowDate().plusWeeks(2));
+        b.setLastDay(Period.between(b.getBorrowDate(),b.getReturnDate()).getDays());
+        System.out.println("대출이 완료되었습니다");
 
     }
 
 
     public void showBookList(){
         for(int i=0;i<bookList.size();i++){
-            System.out.printf("[%d].%s\t,%s\t,%s\n",i+1,bookList.get(i).getBookName(),bookList.get(i).getAuthor(),bookList.get(i).getIsbn());
+            System.out.printf("[%d].%s\t,%s\t,%s\t,%s\n",i+1,bookList.get(i).getBookName(),bookList.get(i).getAuthor(),bookList.get(i).getIsbn(),bookList.get(i).isBorrowed());
         }
     }
 
