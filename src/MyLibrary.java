@@ -22,6 +22,7 @@ public class MyLibrary {
             System.out.printf("[%d]%s(%s)\n",i++,u.getName(),u.getId());
         }
         System.out.println("[-1]종 료");
+        dash();
         System.out.print("선택 : ");
         int sel = scan.nextInt();
         System.out.println("## "+sel+"선택 ##");
@@ -32,30 +33,42 @@ public class MyLibrary {
                 curUser = users.get(sel);
                 System.out.println("환영합니다 "+curUser.getName()+"님!");
                 showMenu();
-
         }
     }
+
     public void showMenu(){
         cls(); int choice;
         System.out.println("메인화면 - 작업 선택"+"("+curUser.getId()+")");
+        dash();
         System.out.println("1.도서 대출\n2.도서 반납\n3.나의 도서 대여 현황\n-1.종료");
+        dash();
         System.out.print("선택: ");
         choice=scan.nextInt();
+
         switch(choice) {
             case -1: cls();start();break;
             case 1: BorrowBook();showMenu();break;
             case 2:returnBook();showMenu();break;
             case 3:curUser.showMyBook();showMenu();break;
         }
-
     }
+
     public void returnBook(){
-        curUser.showMyBook(); int choice;
-        System.out.println("반납하실 도서의 번호를 입력해주세요");
+        if(curUser.getMyList().size()==0) {
+            System.out.println("현재 대여중인 도서가 없습니다.");
+            return;
+        }
+
+        int choice;
+        System.out.println("\n도서 반납 - 도서 선택"+"("+curUser.getId()+")");
+
+        curUser.showMyBook();
+        System.out.print("반납하실 도서의 번호를 입력해주세요(뒤로가기:-1)0:");
         choice=scan.nextInt();
+        if(choice==-1)
+            return;
         curUser.RemoveBook(choice);
         System.out.println("도서의 반납이 완료되었습니다");
-
     }
 
     public void BorrowBook(){
@@ -63,14 +76,23 @@ public class MyLibrary {
         dash();
         showBookList(); int bookNum;
         dash();
-        System.out.print("대출을 원하시는 책의 번호를 입력해주세요:");
+        System.out.print("대출을 원하시는 책의 번호를 입력해주세요(뒤로가기:-1):");
         bookNum=scan.nextInt()-1;
+        if(bookNum==-2)
+            return;
+
         Book b=bookList.get(bookNum);
-        curUser.AddBook(bookList.get(bookNum));
-        b.setBorrowDate(LocalDate.now());
-        b.setReturnDate(b.getBorrowDate().plusWeeks(2));
-        b.setLastDay(Period.between(b.getBorrowDate(),b.getReturnDate()).getDays());
-        System.out.println("대출이 완료되었습니다");
+
+        if (b.getBorrowed())
+            System.out.println("##해당 도서는 현재 대출이 불가능합니다##.");
+
+        else {
+            curUser.AddBook(b);
+            b.setBorrowDate(LocalDate.now());
+            b.setReturnDate(b.getBorrowDate().plusWeeks(2));
+            b.setLastDay(Period.between(b.getBorrowDate(), b.getReturnDate()).getDays());
+            System.out.println("##대출이 완료되었습니다##");
+        }
 
     }
 
@@ -100,7 +122,7 @@ public class MyLibrary {
     }
 
     public void cls(){
-        for(int i=0;i<3;i++)
+        for(int i=0;i<5;i++)
             System.out.println();
     }
 

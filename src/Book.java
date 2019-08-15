@@ -1,6 +1,5 @@
 import java.time.LocalDate;
-import java.time.Period;
-import java.util.Date;
+
 
 public class Book {
     private String bookName;
@@ -46,7 +45,7 @@ public class Book {
 
     public String isBorrowed(){
         if(borrowed==true){
-            return "대출중";
+            return "대출불가";
         }
         else
             return "대출가능";
@@ -55,6 +54,8 @@ public class Book {
     public void setBorrowed(boolean borrowed) {
         this.borrowed = borrowed;
     }
+
+    public boolean getBorrowed(){return borrowed;}
 
     public LocalDate getBorrowDate() {
         return borrowDate;

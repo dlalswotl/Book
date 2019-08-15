@@ -4,6 +4,5 @@ public class Launcher {
         lib.genBook();
         lib.genUser();
         lib.start();
-
     }
 }
