@@ -57,6 +57,4 @@ public class User {
         myList.get(index).setBorrowed(false);
         myList.remove(index);
     }
-
-
 }
